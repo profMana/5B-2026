@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "serve": "^14.2.6",
+    "typescript": "^7.0.2"
+  }
+}

@@ -7,11 +7,12 @@
     "http",
     "dispatching"
   ],
+
   "license": "ISC",
   "author": "Roberto Mana",
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"start": "tsx watch server.ts",
+	  "start": "tsx watch server.ts"
   }
 }

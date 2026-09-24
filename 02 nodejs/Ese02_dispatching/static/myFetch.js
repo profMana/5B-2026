@@ -21,7 +21,7 @@ async sendRequest(method, url="", params={}) {
 		const queryParams = new URLSearchParams()
 		for (let key in params){
 			let value = params[key]
-			if(value){
+			if(value!=undefined && value != null){
 				if(typeof value === "object")
 					// nel casop degli object la serializzazione automatica restituirebbe 'Object object'
 					queryParams.append(key, JSON.stringify(value))

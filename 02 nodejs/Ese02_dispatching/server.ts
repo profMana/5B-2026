@@ -2,7 +2,7 @@ import http from "http"
 import url from "url"
 import fs from "fs"
 import mime from 'mime'
-import HEADERS from "./headers.json"
+import HEADERS from "./headers.json" with {type: "json"}
 import strict from "assert/strict"
 
 // CONFIGURAZIONI
@@ -13,7 +13,7 @@ let paginaErrore = ""
 // ogni volta che arriva una richiesta dal client
 const server = http.createServer(function(req, res){
         let method = req.method
-        let fullPath = url.parse(req.url!, true)
+        let fullPath = url.parse(req.url!, true) // @ts-ignore
         let resource = fullPath.pathname
         let getParams = fullPath.query
         console.log(`Richiesta ricevuta : ${method}:${resource}, getParams:${JSON.stringify(getParams)}`)
@@ -32,7 +32,7 @@ const server = http.createServer(function(req, res){
                 else{
                     let header = { "Content-Type": mime.getType(resource!) as string}
                     res.writeHead(200, header)
-                     
+                    res.write(data.toString("utf-8"));
                 }
                 res.end()
             })
@@ -41,6 +41,24 @@ const server = http.createServer(function(req, res){
         }
         else{
             // risorsa dinamica cioè richiesta dati 
+            if(resource === "/api/servizio1"){
+                res.writeHead(200, HEADERS.json);
+                res.write(JSON.stringify(getParams));
+                res.end();
+            }
+            else if(resource === "/api/servizio2"){
+                res.writeHead(200, HEADERS.json);
+                res.write(JSON.stringify(getParams));
+                res.end();
+            }
+            else{
+                // se non trova nessun listener disponibile
+                // risponde con una stringa di errore
+                // RISORSA NON STATICA --> RICHIESTA NON HTML
+                res.writeHead(404, HEADERS.text);
+                res.write(`Risorsa dinamica ${resource} non disponibile`);
+                res.end(); 
+            }
         }
         
 

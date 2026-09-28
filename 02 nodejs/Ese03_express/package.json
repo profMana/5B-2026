@@ -1,0 +1,24 @@
+{
+  "name": "ese03_express",
+  "version": "1.0.0",
+  "description": "Esempio di dispatcher scritto con express",
+  "keywords": [
+    "node",
+    "http"
+  ],
+  "type": "module",
+  "license": "ISC",
+  "author": "Roberto Mana",
+  "main": "server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsx watch server.ts"
+  },
+  "dependencies": {
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2"
+  }
+}

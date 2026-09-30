@@ -3,7 +3,9 @@
 let params =  {
 	"name":"Aurora" , 
 	"vet":[1,2,3], 
-	"obj":{x:5, y:7}
+	"obj":{x:5, y:7},
+	"eta": 16, 
+	"presente": true
 }
 
 let div = document.querySelector("div")

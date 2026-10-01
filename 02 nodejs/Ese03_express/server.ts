@@ -1,16 +1,19 @@
 import http from "http";
 import fs from "fs";
 import express from "express";
+// anche se dispatcher è un file ts,
+// occorre importare il file js compilato
+import dispatcher from "./dispatcher.js"
 
-/* ========= CONFIGURAZIONE ========= */
+/* ====================== 1 CONFIGURAZIONE ================== */
 const port = 3000
 let paginaErrore = ""
 const app = express()
 
-/* ========= MIDDLEWARE ========= */
+/* ========= 2 MIDDLEWARE ========= */
 // A - Request Log
 app.use("/", function (req, res, next){
-    console.log(`----> ${req.method} : ${req.originalUrl}`)
+    console.log(`----> ${req.method} : ${req.url}`)
     next()
 })
 
@@ -61,20 +64,30 @@ app.use("/", function(req, res, next){
     next()
 })
 
-/* ========= DISPATCHING (SMISTAMENTO DELLE RICHIESTE) ========= */
-// Route per servire /richiesta1
-app.get("/api/richiesta1", function(req, res, next){
-    const params = req.query
-    console.log("OK")
-    if (params)
-        res.send(params) // Se params è un JSON viene automaticamente SERIALIZZATO, altrimenti no
-    else
-        res.status(400).send("Parametri mancanti")
+/* ========= 3 DISPATCHING (SMISTAMENTO DELLE RICHIESTE) ========= */
+// quando richiamo un dispatcher di secondo livello,
+// a questo dispatcher viene passata come risorsa req.url
+// che è la differenza tra originalUrl impostata dal client
+// e la baseUrl di ascolto.
+// In pratica nella url passata a dispatcher viene eliminato /api
+app.use("/api", dispatcher)
+
+/* =========== 4 DEFAULT ROUTE E GESTIONE DEGLI ERRORI ========= */
+app.use("/", function(req, res){
+    res.status(404)
+    // se è una risorsa dinamica
+    if(req.url.startsWith("/api/"))
+        res.send("Risorsa Dinamica non trovata")
+    // se invece è una richiesta per una pagina html
+    else if(req.accepts("html"))
+        res.send(paginaErrore)
+    // risolve un problema con le immagini
+    else        
+        res.send()
 })
 
-/* ========= DEFAULT ROUTE E GESTIONE DEGLI ERRORI ========= */
 
-/* ========= CREAZIONE ED AVVIO DEL SERVER ========= */
+/* =============== 5 CREAZIONE ED AVVIO DEL SERVER ========= */
 const server = http.createServer(app)
 function startServer(){
     fs.readFile("./static/error.html", function(err, data){

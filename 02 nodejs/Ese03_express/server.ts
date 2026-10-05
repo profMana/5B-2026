@@ -1,6 +1,6 @@
 import http from "http";
 import fs from "fs";
-import express from "express";
+import express, {Request, Response, NextFunction} from "express";
 // anche se dispatcher è un file ts,
 // occorre importare il file js compilato
 import dispatcher from "./dispatcher.js"
@@ -10,7 +10,7 @@ const port = 3000
 let paginaErrore = ""
 const app = express()
 
-/* ========= 2 MIDDLEWARE ========= */
+/* =================== 2 MIDDLEWARE ========= */
 // A - Request Log
 app.use("/", function (req, res, next){
     console.log(`----> ${req.method} : ${req.url}`)
@@ -73,6 +73,7 @@ app.use("/", function(req, res, next){
 app.use("/api", dispatcher)
 
 /* =========== 4 DEFAULT ROUTE E GESTIONE DEGLI ERRORI ========= */
+// default route
 app.use("/", function(req, res){
     res.status(404)
     // se è una risorsa dinamica
@@ -86,13 +87,20 @@ app.use("/", function(req, res){
         res.send()
 })
 
+// gestione degli errori
+app.use("/", function(err:any, req:Request, res:Response, next:NextFunction) {
+    console.log("************* SERVER ERROR ***************\n", err.stack)
+    let status = err.status || 500
+    res.status(status).send(err.message)
+});
+
 
 /* =============== 5 CREAZIONE ED AVVIO DEL SERVER ========= */
 const server = http.createServer(app)
 function startServer(){
     fs.readFile("./static/error.html", function(err, data){
         if(err)
-            paginaErrore="<h2>Risorsa non trovata</h2>"
+            paginaErrore="<h2>Risorsa Statica non trovata</h2>"
         else
             paginaErrore = data.toString()
     })

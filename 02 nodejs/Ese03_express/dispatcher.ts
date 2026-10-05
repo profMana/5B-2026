@@ -9,7 +9,7 @@ import { Router } from "express"
 const app = Router()
 
 // Route per servire /richiesta2
-app.get("/richiesta1", function(req, res, next){
+app.get("/richiesta1", function(req, res){
     const get_params = req.query
      
     if (get_params)
@@ -19,7 +19,7 @@ app.get("/richiesta1", function(req, res, next){
 })
 
 // Route per servire /richiesta2
-app.post("/richiesta2", function(req, res, next){
+app.post("/richiesta2", function(req, res){
     const get_params = req.query
     const post_params = req.body
      
@@ -29,7 +29,18 @@ app.post("/richiesta2", function(req, res, next){
         res.status(400).send("Parametro get mancante")
 })
 
-// se nessuna route viene eseguita automaticamente il controllo
-// ritorna al file principale
+
+app.get("/richiestaParams/:gender/:id", function(req, res){
+    const gender = req.params.gender
+    const id = req.params.id  
+    if(isNaN(Number(id)))
+        res.status(422).send("id non valido")
+    else
+        res.send({gender, id})
+
+})
+
+// se nessuna route viene eseguita,
+// automaticamente il controllo ritorna al file principale
 
 export default app

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert</title>
+    <link rel="stylesheet" href="inserisci.css">
+    <script type="application/javascript" src="myFetch.js"></script>
+    <script defer type="application/javascript" src="inserisci.js"></script>
+</head>
+<body>
+    <h1>Inserisci un nuovo record</h1>
+	
+
+    <label for="txtTitle"><b>Title:</b></label>  
+	<input type="text" id="txtTitle">
+    <label for="txtFirst"><b>First:</b></label>  
+	<input type="text" id="txtFirst">
+    <label for="txtLast"><b>Last:</b></label>  
+	<input type="text" id="txtLast">
+	<br>
+
+    <label><b>Gender:</b></label>  
+    <label class="gender" for="optFemale">F</label>  
+	<input type="radio" name="gender" id="optFemale" value="F">
+    <label class="gender" for="optMale">M</label>  
+	<input type="radio" name="gender" id="optMale" value="M">
+    <br>
+
+    <label for="lstCountries"><b>Country:</b></label> 
+	<select id="lstCountries"> </select>
+	<br>
+	
+    <label for="txtCity"><b>City:</b></label> 
+	<input type="text" id="txtCity">
+	<br>
+    <label for="txtState"><b>State:</b></label> 
+	<input type="text" id="txtState">
+	<br>
+    <label for="txtCell"><b>Cell:</b></label> 
+	<input type="text" id="txtCell">
+	<br>
+    <label for="txtMail"><b>Mail:</b></label> 
+	<input type="text" id="txtMail">
+	<br>
+	
+	
+    <button id="btnSalva"><b>Salva</b></button>
+    <button id="btnAnnulla"><b>Annulla</b></button>
+</body>
+</html>

@@ -1,6 +1,6 @@
 import { Router } from "express"
 import peopleObject from "./people.json" with {type:"json"}
-
+import fs from "fs/promises"
 // config
 const app = Router()
 let people = peopleObject.results
@@ -33,9 +33,34 @@ app.get("/getPeople", function (req, res){
     res.send(results)
 })
 
+app.get("/getDetails", function (req, res){
+    const name = req.query.nome
+    const person = people.find(function(item){
+        return JSON.stringify(item.name) == JSON.stringify(name)
+    })
+    res.send(person)
+})
 
+app.delete("/delete", async function (req, res){
+    const name = req.body
+    people = people.filter(function(item){ 
+        return JSON.stringify(item.name) != JSON.stringify(name)
+    })
 
+    try{
+        await savePeople()
+        res.send({"ris": "ok"})
+    }
+    catch(err: any){
+        const status = err.status || 500
+        res.status(status).send("Errore nella cancellazione del record " + err.message)
+    }
+})
 
+async function savePeople(){
+    peopleObject.results = people
+    await fs.writeFile("./people.json", JSON.stringify(peopleObject, null, 3))
+}
 // se nessuna route viene eseguita,
 // automaticamente il controllo ritorna al file principale
 

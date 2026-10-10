@@ -39,6 +39,7 @@ async function getCountries() {
             a.addEventListener("click", function () {
                 this.parentElement.parentElement.firstElementChild.textContent = this.textContent
                 visualizzaTabella()
+				divDettagli.style.display = "none"
             })
         }
     }
@@ -84,8 +85,6 @@ async function visualizzaTabella() {
                 elimina(person.name)
             })
         });
-        /* divDettagli.innerHTML = ""
-        divDettagli.style.display = "none" */
     }
     else
         alert(response.status + " : " + response.err)
@@ -102,7 +101,7 @@ async function visualizzaDettagli(nome) {
         const personDetails = response.data
         divDettagli.style.display = "";
 
-        if (personDetails.picture.large)
+        if (personDetails.picture && personDetails.picture.large)
             dettagliImg.src = personDetails.picture.large
         else
             dettagliImg.src = "./img/user.png" // img di default
@@ -124,7 +123,6 @@ async function elimina(nome) {
         if (response.ok) {
             console.log(response.data)
             visualizzaTabella()
-            divDettagli.innerHTML = ""
             divDettagli.style.display = "none"
             alert("Record rimosso correttamente")
         }
@@ -133,6 +131,7 @@ async function elimina(nome) {
     }
 }
 
+/* pulsanti di navigazione dei dettagli */
 btnNavigazione[0].addEventListener("click", function(){
     if (currentPos != 0)
     {
@@ -140,7 +139,6 @@ btnNavigazione[0].addEventListener("click", function(){
         visualizzaDettagli(people[currentPos].name)
     }   
 })
-
 btnNavigazione[1].addEventListener("click", function(){
     if (currentPos > 0)
     {

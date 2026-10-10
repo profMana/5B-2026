@@ -39,6 +39,7 @@ app.get("/getDetails", function (req, res){
         return JSON.stringify(item.name) == JSON.stringify(name)
     })
     res.send(person)
+    // se una nazione non ha persone non è comunque un errore !
 })
 
 app.delete("/delete", async function (req, res){
@@ -61,6 +62,28 @@ async function savePeople(){
     peopleObject.results = people
     await fs.writeFile("./people.json", JSON.stringify(peopleObject, null, 3))
 }
+
+
+app.post("/addPerson", async (req, res) => {
+	let person = req.body
+	console.log(person)
+	if(Object.keys(person).length>0){
+		people.push(person)
+        try{
+            await savePeople()
+            res.send({"ris": "ok"})
+        }
+        catch(err: any){
+            const status = err.status || 500
+            res.status(status).send("Errore inserimento record " + err.message)
+        }
+	}
+	else
+        res.status(400).send(`Parametri mancanti`)
+})
+
+
+
 // se nessuna route viene eseguita,
 // automaticamente il controllo ritorna al file principale
 

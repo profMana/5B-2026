@@ -78,7 +78,7 @@ app.use("/", function(req, res){
     res.status(404)
     // se è una risorsa dinamica
     if(req.url.startsWith("/api/"))
-        res.send("Risorsa Dinamica non trovata")
+        res.send("Risorsa Dinamica non trovata: " + req.originalUrl)
     // se invece è una richiesta per una pagina html
     else if(req.accepts("html"))
         res.send(paginaErrore)

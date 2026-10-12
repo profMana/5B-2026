@@ -101,7 +101,8 @@ async function visualizzaDettagli(nome) {
         const personDetails = response.data
         divDettagli.style.display = "";
 
-        if (personDetails.picture && personDetails.picture.large)
+     // if (personDetails.picture && personDetails.picture.large)
+        if (personDetails.picture?.large)
             dettagliImg.src = personDetails.picture.large
         else
             dettagliImg.src = "./img/user.png" // img di default

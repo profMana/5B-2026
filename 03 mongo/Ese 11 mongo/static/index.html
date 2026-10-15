@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unicorns</title>
+	<link rel="stylesheet" href="index.css">
+    <script type="application/javascript" src="myFetch.js"></script>	
+    <script defer type="application/javascript" src="index.js"></script>	
+</head>
+
+<body>
+    <h1>the site of unicorns</h1>
+	
+	<div class="image"><img src="img/unicorn.png"></div>
+	
+	<div class="wrapper one">
+		<input type="radio" name="gender" value="m" checked > male <br>
+		<input type="radio" name="gender" value="f"> female <br>
+		<button> getUnicorms </button>
+	</div>			
+	
+	<table>	
+		<thead>
+			<tr>
+				<th>name</th>
+				<th>loves</th>
+				<th>weight</th>
+				<th>hair</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+			
+	<div class="wrapper one">	
+		<input id="txtName" type="text" placeholder="insert name"> 
+		<button> addUnicorn </button>
+		<button> updateUnicorn </button>
+		<button> deleteUnicorn </button>
+	</div>	
+			
+</body>
+</html>

@@ -5,16 +5,17 @@ import { models } from "./models.js"
 const app = Router()
 
 // routes
-/* app.get("/getCountries", function(req, res){
-    const countries = people.map(function(person){
-        return person.location.country
-    })
-    // trasformo il vettore in un Set eliminando tutti i duplicati
-    const results = new Set (countries)
-    const resultsArray = Array.from (results)
-    resultsArray.sort()
-    res.send(resultsArray)
-}) */
+app.get("/getUnicorns/:gender", async function(req, res, next){
+    const gender = req.params.gender
+    try{
+        let data = await models.getData(gender)
+        res.send(data)
+    }
+    catch(err)
+    {
+        next(err) // err contiene l'errore impostato dal models
+    }
+})
 
 
 

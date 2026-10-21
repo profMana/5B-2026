@@ -4,9 +4,11 @@ import express, {Request, Response, NextFunction} from "express";
 // anche se dispatcher è un file ts,
 // occorre importare il file js compilato
 import dispatcher from "./dispatcher.js"
+import dotenv from "dotenv"
 
 /* ====================== 1 CONFIGURAZIONE ================== */
-const port = 3000
+dotenv.config({path:".env"})
+const port:number = Number(process.env.PORT)
 let paginaErrore = ""
 const app = express()
 

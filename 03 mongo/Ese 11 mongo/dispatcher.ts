@@ -17,6 +17,19 @@ app.get("/getUnicorns/:gender", async function(req, res, next){
     }
 })
 
+app.get("/getUnicorns/:id", async function(req, res, next){
+    const id = req.params.id
+    try{
+        let data = await models.getDataById(id)
+        res.send(data)
+    }
+    catch(err)
+    {
+        next(err) // err contiene l'errore impostato dal models
+    }
+})
+
+
 
 
 // se nessuna route viene eseguita,

@@ -15,6 +15,7 @@
     "start": "tsx watch server.ts"
   },
   "dependencies": {
+    "dotenv": "^18.0.8",
     "express": "^5.2.1",
     "mongodb": "^7.7.0",
     "tsx": "^4.23.15",

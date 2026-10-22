@@ -44,7 +44,7 @@ class Models{
         return this.client!.db(DBNAME)
     }
 
-    private async closeConnection(){
+    public async closeConnection(){
         if(this.client){
             await this.client.close()
             this.client = undefined
@@ -74,19 +74,59 @@ class Models{
     }
    
     async getDataById(idValue:string){
-         const db = await this.getDB()
-         const collection = db.collection(this.collectionName)
-         const id = this.getObjectId(idValue)
-         const data = await collection.findOne({"_id":id as any})
-         
-
+        const db = await this.getDB()
+        const collection = db.collection(this.collectionName)
+        const id: any = this.getObjectId(idValue)
+        const data = await collection.findOne({"_id":id})
+        
+        if(!data)
+            this.emitError(404, "Documento non trovato")
+        else
+            return data
     }
 
+    async addDocument(document: any){
+        const db = await this.getDB()
+        const collection = db.collection(this.collectionName)
+        const result = await collection.insertOne(document)
+        
+        if(!result.acknowledged)
+            this.emitError(500, "Inserimento non riuscito")
+        else 
+            return result
+    }
+    
+    async updateDocumentByName(name: string, action: any){
+        const db = await this.getDB()
+        const collection = db.collection(this.collectionName)
+        const result = await collection.updateOne({name}, {"$set": action })
+        
+        if(result.matchedCount == 0)
+            this.emitError(404, "Aggiornamento non riuscito: documento inesistente")
+        else 
+            return result
+    }
+    async deleteDocumentByName(name: string){
+        const db = await this.getDB()
+        const collection = db.collection(this.collectionName)
+        const result = await collection.deleteOne({name})
+        
+        if(result.deletedCount == 0)
+            this.emitError(404, "Cancellazione non riuscita: documento inesistente")
+        else 
+            return result
+    }
 }
 
 
 
 const models = new Models()
+
+process.on("SIGINT", async() => {
+    await models.closeConnection();
+    console.log("Connessione al database terminata correttamente");
+    process.exit(0)
+})
 
 export { models }
 //export default models

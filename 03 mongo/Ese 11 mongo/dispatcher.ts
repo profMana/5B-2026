@@ -17,7 +17,7 @@ app.get("/getUnicorns/:gender", async function(req, res, next){
     }
 })
 
-app.get("/getUnicorns/:id", async function(req, res, next){
+app.get("/getUnicorn/:id", async function(req, res, next){
     const id = req.params.id
     try{
         let data = await models.getDataById(id)
@@ -29,9 +29,38 @@ app.get("/getUnicorns/:id", async function(req, res, next){
     }
 })
 
+app.post("/addUnicorn", async function(req, res, next){
+    const unicorn = req.body
+    try{
+        const result = await models.addDocument(unicorn)
+        res.send(result)
+    }
+    catch(err){
+        next(err)
+    }
+})
 
-
-
+app.patch("/updateUnicorn/:name", async function(req, res, next){
+    const name = req.params.name
+    const action = req.body
+    try{
+        const result = await models.updateDocumentByName(name, action)
+        res.send(result)
+    }
+    catch(err){
+        next(err)
+    }
+})
+app.delete("/deleteUnicorn/:name", async function(req, res, next){
+    const name = req.params.name
+    try{
+        const result = await models.deleteDocumentByName(name)
+        res.send(result)
+    }
+    catch(err){
+        next(err)
+    }
+})
 // se nessuna route viene eseguita,
 // automaticamente il controllo ritorna al file principale
 

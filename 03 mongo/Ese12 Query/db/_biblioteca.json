@@ -1,0 +1,82 @@
+[
+ {  "titolo" : "Promessi Sposi",
+    "autore" : "Alessandro Manzoni",
+    "posizione" : {"stanza":2, "scaffale":3, "piano":4},
+    "pubblicazioni" : [ 
+        {   "editore" : "PremiateEdizioni",
+            "anno" : 2010,  
+			"nPagine" : 400
+        }, 
+        {   "editore" : "Mondadori",
+            "anno" : 1999, 
+			"nPagine" : 500
+        }, 
+        {   "editore" : "MieEdizioni",  
+            "anno" : 1996,  
+			"nPagine" : 600
+        }  
+    ]
+ },
+ 
+ {  "titolo" : "Il fu Mattia Pascal",
+    "autore" : "Luigi Pirandello",
+    "posizione" : {"stanza":2, "scaffale":3, "piano":5},
+    "pubblicazioni" : [ 
+        {   "editore" : "Einaudi",
+            "anno" : 2010,  
+			"nPagine" : 402
+        }, 
+        {   "editore" : "Mondadori",
+            "anno" : 2011,  
+			"nPagine" : 502
+        }, 
+        {   "editore" : "MieEdizioni",  
+            "anno" : 1912,  
+			"nPagine" : 602
+        },
+        {   "editore" : "Mondadori",
+            "anno" : 2013,  
+			"nPagine" : 702
+        }	
+    ]
+ },
+
+ {  "titolo" : "Il gattopardo",
+    "autore" : "Giuseppe Tomasi di Lampedusa",
+    "posizione" : {"stanza":2, "scaffale":7, "piano":4},
+    "pubblicazioni" : [ 
+        {   "editore" : "PremiateEdizioni",
+            "anno" : 2010,  
+			"nPagine" : 403
+        }, 
+        {   "editore" : "Einaudi",
+            "anno" : 2011,  
+			"nPagine" : 503
+        }, 
+        {   "editore" : "Rizzoli",  
+            "anno" : 2012,  
+			"nPagine" : 603
+        }  
+    ]
+ },
+ 
+ {  "titolo" : "La Sicilia come metafora",
+    "autore" : "Leonardo Sciascia",
+    "posizione" : {"stanza":7, "scaffale":3, "piano":5},
+    "pubblicazioni" : [ 
+        {   "editore" : "Einaudi",
+            "anno" : 2012,  
+			"nPagine" : 404
+        }, 
+        {   "editore" : "Mondadori",
+            "anno" : 2013,  
+			"nPagine" : 504
+        }, 
+        {   "editore" : "Newton Libri",  
+            "anno" : 2014,  
+			"nPagine" : 604
+        }  
+    ]
+ }
+ 
+]

@@ -1,0 +1,67 @@
+       switch(queryNumber)
+        {
+            case 1:
+                result = await collection.find({"weight": {"$gt": 700, "$lt": 800 }}).toArray()
+                break;
+            case 2: 
+                result = await collection.find({"gender": "m", "loves": "grape", "vampires": {"$gt": 60}}).toArray()
+                break;
+            case 3:
+                result = await collection.find({"$or": [{"gender": "f"}, 
+                                        {"weight": {"$lt": 700}}]}).toArray()
+                break;
+            case 4: 
+                result = await collection.find({"vampires": {"$gt": 60}, 
+                "$or": [{"loves": "grape"},{"loves": "apple"}]}).toArray(); 
+                break;
+            case 5: 
+            result = await collection.find({"vampires": {"$gt": 60}, 
+                "loves": {"$all": ["grape", "watermelon"]}}).toArray();
+            break;
+            case 6:
+            result = await collection.find({"hair": {"$in": ["brown", "grey"]}}).toArray(); 
+            break;
+            case 7:
+            // result = await collection.find({"vaccinated": {"$ne": true}}).toArray(); 
+            result = await collection.find({"$or": [{"vaccinated": false}, 
+                {"vaccinated": {"$exists": false}}]}).toArray(); 
+            break;
+
+            case 8: 
+            // result = await collection.find({"gender": "m", "loves": {"$nin": ["apple"]}}).toArray();
+            result = await collection.find({"gender": "m", "loves": {"$ne":"apple"}}).toArray();
+            break;
+
+            case 9: 
+            const regex = new RegExp("^a", "i")
+            result = await collection.find({"name": regex, "gender": "f"}).toArray();
+            break;
+
+            case 10:
+            const id = new ObjectId("6adf18ac58df71e84d523d87")
+            result = await collection.find({"_id": id}).toArray();
+            break;
+
+            case 11: 
+            // result = await collection.find({"gender": "m"},
+            //     {"projection":{"name": 1, "vampires": 1}}).toArray();
+
+            result = await collection.find({"gender": "m"})
+            .project({"name": 1, "vampires": 1})
+            .sort({"vampires": "desc", "weight": "asc"})
+            .skip(1).limit(3).toArray();
+            break;
+
+            case 12: 
+            result = await collection.countDocuments({"weight": {"$gt": 500}})
+            break;
+
+            case 13: 
+            result = await collection.findOne({"name": "Aurora"}, 
+                {"projection": {"name": 1, "vampires": 1, "weight": 1, "_id": 0}});
+            break;
+
+            case 14:
+            result = await collection.distinct("loves", {"gender": "f"}); 
+            break;
+        }

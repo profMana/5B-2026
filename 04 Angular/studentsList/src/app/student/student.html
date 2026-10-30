@@ -1,0 +1,21 @@
+<!--div class="item" [ngStyle]="{backgroundColor: student.present ? '':'red'}"-->
+<div class="item" [ngStyle]="getStyle(student)" (click)="gestisciPresenza()">
+
+    student 
+    <span [ngClass]="{'female':student.gender=='F',
+                      'male':  student.gender=='M',
+                      'underlined': student.city=='Fossano'
+                     }"> 
+        {{student.name}}</span>  
+    from 
+    <span>
+        {{student.city}} 
+    </span>
+    
+    @if (student.present){
+        <span> is present </span>
+    }
+    @else{
+        <span> is absent </span>
+    }
+</div>

@@ -1,0 +1,19 @@
+.item{
+    padding:8px 16px;
+}
+
+.female{
+    background-color: pink;
+    color:#fff;
+    font-style:italic;
+}
+
+.male{
+    background-color: cyan;
+    color:#000;
+}
+
+.underlined{
+    text-decoration: underline;
+    font-weight:bold;
+}

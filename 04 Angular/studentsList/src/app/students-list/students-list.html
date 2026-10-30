@@ -1,0 +1,37 @@
+<div class="wrapper">
+   <div>
+      <label for="txtName">Student Name:</label>
+      <input type="text" #txtName id="txtName" [(ngModel)]="studentName">
+   </div>
+   <div>
+     <input type="radio" name="optGender" value="M" [(ngModel)]="studentGender"> Male
+     <input type="radio" name="optGender" value="F" [(ngModel)]="studentGender"> Female
+   </div>
+   <div>
+      <input type="checkbox" [(ngModel)]="studentPresent"> Present
+   </div>
+   <div>
+      <label for="lstCity">City</label>
+      <select id="lstCity" [(ngModel)]="studentCity">
+         @for (city of cities; track $index) {
+            <option>{{city}}</option>
+         }
+      </select>
+   </div>
+   <button class="add" [disabled]="studentName.length<3" (click)="onAddStudent()">
+      Add Student
+   </button>
+
+   <!-- Visualizzazione della lista degli studenti -->
+   <div>
+      @for (s of students; track $index){
+         <div class="item">
+            <span> {{$index + 1 }} => </span>
+            <!-- student {{student.name}} from {{student.city}} is {{student.present}} -->
+             <app-student [student]="s" > </app-student>
+             <button class="delete" (click)="onDeleteStudent(s.name)">Delete</button>
+         </div>
+      }
+
+   </div>
+</div>

@@ -1,0 +1,44 @@
+.wrapper{
+    width:600px;
+    margin-top:25px;
+    text-align:center;
+    border:1px solid #ccc;
+}
+
+.item{
+    display:flex;
+    flex-direction: row;  /* default */
+    /* justify-content = allineamento sull'asse indicato da flex-direction */
+    justify-content: center;
+    align-items:center;
+    margin:10px;
+}
+
+.item > span {
+    margin-right:6px;
+}
+
+app-student{
+    width:360px;
+    cursor:pointer;
+}
+
+.wrapper >div{
+    margin:16px;
+}
+
+.add, .delete{
+    background-color: #27c;
+    padding:6px 10px;
+    border-radius:6px;
+    color : whitesmoke;
+    cursor:pointer
+}
+
+.add:disabled{
+    background-color: #aaa;
+}
+
+.delete{
+    margin-left:10px;
+}

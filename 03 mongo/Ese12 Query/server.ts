@@ -63,16 +63,21 @@ class Models {
 }
 
 const models = new Models()
+const queryIndex = 27
+let collectionName = ""
+if (queryIndex >= 24)
+    collectionName = "biblioteca"
+else
+    collectionName = "unicorns"
 
-const collectionName = "unicorns"
-executeQuery(23)
+executeQuery(queryIndex)
 
 async function executeQuery(queryNumber: number) {
     try {
         const db = await models.getDB()
         const collection = db.collection(collectionName)
         let result: any
-
+        let regex: any
         switch (queryNumber) {
             case 1:
                 result = await collection.find({ "weight": { "$gt": 700, "$lt": 800 } }).toArray()
@@ -115,7 +120,7 @@ async function executeQuery(queryNumber: number) {
                 break;
 
             case 9:
-                const regex = new RegExp("^a", "i")
+                regex = new RegExp("^a", "i")
                 result = await collection.find({ "name": regex, "gender": "f" }).toArray();
                 break;
 
@@ -164,8 +169,8 @@ async function executeQuery(queryNumber: number) {
                 break;
 
             case 16:
-                const regex2 = new RegExp("^minnie$", "i")
-                result = await collection.deleteOne({ "name": regex2 })
+                regex = new RegExp("^minnie$", "i")
+                result = await collection.deleteOne({ "name": regex })
                 break;
 
             case 17: // Incrementare di 1 il numero dei vampiri uccisi da Pilot
@@ -223,17 +228,68 @@ async function executeQuery(queryNumber: number) {
             case 23:
                 //Sostituire l'unicorno Pluto con un nuovo record (replaceOne)
                 result = await collection.replaceOne(
-                    { "name": "Pluto" }, 
+                    { "name": "Pluto" },
                     {
-                        "name": "Pluto", 
-                        "gender": "m", 
-                        "weight": 250, 
+                        "name": "Pluto",
+                        "gender": "m",
+                        "weight": 250,
                         "hair": "blonde"
                     }
                 )
                 break;
+            case 24:
+                //Trovare tutti i libri posizionati nella stanza 2, scaffale 3.
+                //Visualizzare titolo, autore, posizione ed elenco di TUTTE le pubblicazioni
+                result = await collection.find(
+                    {
+                        "posizione.stanza": 2,
+                        "posizione.scaffale": 3
+                    },
+                    {
+                        "projection": { "_id": 0, "titolo": 1, "autore": 1, "posizione": 1, "pubblicazioni": 1 }
+                    }
+                ).toArray()
+                break;
+            case 25:
+                //Elenco della case editrici presenti nella biblioteca, ognuna ripetuta una sola volta
+                result = await collection.distinct("pubblicazioni.editore")
+                break;
+            case 26:
+                /*
+                Elenco di tutti i libri pubblicati dalla einaudi 
+                (scritto in formato case insensitive).
+                Visualizzare titolo, autore ed elenco di TUTTE le pubblicazioni 
+                ognuna con il solo campo editore
+                */
+                regex = new RegExp("^einaudi$", "i")
+                result = await collection.find(
+                    {
+                        "pubblicazioni.editore": regex
+                    },
+                    {
+                        "projection": { "_id": 0, "titolo": 1, "autore": 1, "pubblicazioni.editore": 1 }
+                    }
+                ).toArray()
+                break;
+            case 27:
+                /*Elenco di tutti i libri pubblicati dalla einaudi 
+                (scritto in formato case insensitive) nel 2010
+                Visualizzare titolo, autore ed elenco di TUTTE le
+                 pubblicazioni ognuna con i soli campi editore e anno */
+                regex = new RegExp("^einaudi$", "i")
+                result = await collection.find(
+                    {
+                        "pubblicazioni": {
+                            "$elemMatch": { "editore": regex, "anno": 2010}
+                        }
+                    },
+                    {
+                        "projection": { "_id": 0, "titolo": 1, "autore": 1, "pubblicazioni.editore": 1 }
+                    }
+                ).toArray()
+                break;
         }
-        console.table(result)
+        console.table(JSON.stringify(result, null, 3))
         // instanceof verifica il tipo di un object
         if (result instanceof Array)
             console.log("Numero di record trovati: " + result.length)

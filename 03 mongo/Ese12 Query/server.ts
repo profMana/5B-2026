@@ -1,11 +1,22 @@
 import { MongoClient, Db, ObjectId, MongoError } from "mongodb";
 import dotenv from "dotenv"
-import { createJSDocNullableType } from "typescript/unstable/ast/factory";
 
 dotenv.config({ path: ".env" })
-
 const DBNAME = process.env.DBNAME
 const CONNECTION_STRING = process.env.CONNECTION_STRING_LOCAL!
+
+
+const queryIndex = 35
+let collectionName = ""
+if (queryIndex <= 23)
+    collectionName = "unicorns"
+else if (queryIndex <= 30)
+    collectionName = "biblioteca"
+else if (queryIndex <= 32)
+    collectionName = "orders"
+else
+    collectionName = "unicorns"
+
 
 export interface CustomError extends Error {
     status: number
@@ -63,12 +74,6 @@ class Models {
 }
 
 const models = new Models()
-const queryIndex = 27
-let collectionName = ""
-if (queryIndex >= 24)
-    collectionName = "biblioteca"
-else
-    collectionName = "unicorns"
 
 executeQuery(queryIndex)
 
@@ -274,8 +279,8 @@ async function executeQuery(queryNumber: number) {
             case 27:
                 /*Elenco di tutti i libri pubblicati dalla einaudi 
                 (scritto in formato case insensitive) nel 2010
-                Visualizzare titolo, autore ed elenco di TUTTE le
-                 pubblicazioni ognuna con i soli campi editore e anno */
+                Visualizzare titolo, autore e la sola pubblicazione
+                 che ha dato match con tutti i campi */
                 regex = new RegExp("^einaudi$", "i")
                 result = await collection.find(
                     {
@@ -284,16 +289,108 @@ async function executeQuery(queryNumber: number) {
                         }
                     },
                     {
-                        "projection": { "_id": 0, "titolo": 1, "autore": 1, "pubblicazioni.editore": 1 }
+                        "projection": { "_id": 0, "titolo": 1, "autore": 1, 
+                               "pubblicazioni.$": 1    }
                     }
                 ).toArray()
                 break;
+            case 28:
+                /*Elenco di tutti i libri pubblicati dalla einaudi 
+                (scritto in formato case insensitive) nel 2010
+                Visualizzare titolo, autore e la sola pubblicazione
+                 che ha dato match con i soli campi editore e anno */
+                regex = new RegExp("^einaudi$", "i")
+                result = await collection.find(
+                    {
+                        "pubblicazioni": {
+                            "$elemMatch": { "editore": regex, "anno": 2010}
+                        }
+                    },
+                    {
+                        "projection": { "_id": 0, "titolo": 1, "autore": 1, 
+                               "pubblicazioni.editore.$": 1, 
+                               "pubblicazioni.anno": 1 }
+                    }
+                ).toArray()
+                break;
+            case 29:
+                regex = new RegExp("^mondadori$", "i")
+                result = await collection.updateOne({"titolo":"Promessi Sposi", 
+                                                     "pubblicazioni.editore":regex},
+                                {"$inc":{"pubblicazioni.$.nPagine":1}})
+                break;                
+            case 30:
+                result = await collection.updateOne(
+                                {"titolo":"Promessi Sposi"},   
+                                {"$inc" : {"pubblicazioni.$[].nPagine": 1}})    
+                break;  
+            case 31:
+                //NOTA: Desc non è riconosciuto nell'aggregate, ma solo nel file. Usare -1 per ordine decrescente e 1 per crescente.
+                 result = await collection.aggregate([
+                    {"$match": {"status": "A"}},
+                    {"$group": {"_id": "$cust_id", "totale": {"$sum": "$amount"}}},
+                    {"$sort": {"totale": -1}}
+                 ]).toArray();   
+                 break;
+            case 32:
+                 result = await collection.aggregate([
+                    {"$match": {"status": "A"}},
+                    {"$group": 
+                        {   "_id": "$cust_id", 
+                            "media": {"$avg": "$amount"}, 
+                            "mediaTotali": {"$avg": {"$multiply": ["$amount", "$qta"]}}
+                        }},
+                    {"$sort": {"media": -1}}
+                 ]).toArray();
+                break;
+            case 33:
+                 result = await collection.aggregate([
+                    {"$group": {
+                                    "_id": "$gender", 
+                                    "nEsemplari": {"$sum": 1} 
+                               }
+                    }, 
+                    {"$sort": {"nEsemplari": -1}}
+                 ]).toArray();
+
+                break;
+            case 34:
+                 result = await collection.aggregate([
+                    {"$group": 
+                        {
+                            "_id": "$gender",
+                            "vampiriUccisi": {"$avg": "$vampires"}
+                        }
+                    }
+                 ]).toArray();
+                break;
+            case 35:
+                 result = await collection.aggregate([
+                    {"$group":
+                        {
+                            "_id": {"gender": "$gender", "hair": "$hair"},
+                            "nEsemplari": {"$sum": 1}
+                        }
+                    },
+                    {"$project": 
+                        {
+                            "genere": "$_id.gender",
+                            "pelo": "$_id.hair",
+                            "nEsemplari": 1,
+                            "_id": 0
+                        }
+                    }]).toArray();
+                 break;
+  
+
+
         }
         console.table(JSON.stringify(result, null, 3))
         // instanceof verifica il tipo di un object
         if (result instanceof Array)
             console.log("Numero di record trovati: " + result.length)
     }
+
     catch (err: any) {
         console.log("Errore esecuzione query: " + err.stack)
     }

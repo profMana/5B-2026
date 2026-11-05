@@ -6,7 +6,7 @@ const DBNAME = process.env.DBNAME
 const CONNECTION_STRING = process.env.CONNECTION_STRING_LOCAL!
 
 
-const queryIndex = 35
+const queryIndex = 39
 let collectionName = ""
 if (queryIndex <= 23)
     collectionName = "unicorns"
@@ -14,9 +14,14 @@ else if (queryIndex <= 30)
     collectionName = "biblioteca"
 else if (queryIndex <= 32)
     collectionName = "orders"
-else
+else if (queryIndex <= 36)
     collectionName = "unicorns"
-
+else if (queryIndex <= 37)
+    collectionName = "quizzes"
+else if (queryIndex <= 38)
+    collectionName = "students"
+else 
+    collectionName = "orders"
 
 export interface CustomError extends Error {
     status: number
@@ -285,12 +290,14 @@ async function executeQuery(queryNumber: number) {
                 result = await collection.find(
                     {
                         "pubblicazioni": {
-                            "$elemMatch": { "editore": regex, "anno": 2010}
+                            "$elemMatch": { "editore": regex, "anno": 2010 }
                         }
                     },
                     {
-                        "projection": { "_id": 0, "titolo": 1, "autore": 1, 
-                               "pubblicazioni.$": 1    }
+                        "projection": {
+                            "_id": 0, "titolo": 1, "autore": 1,
+                            "pubblicazioni.$": 1
+                        }
                     }
                 ).toArray()
                 break;
@@ -303,76 +310,94 @@ async function executeQuery(queryNumber: number) {
                 result = await collection.find(
                     {
                         "pubblicazioni": {
-                            "$elemMatch": { "editore": regex, "anno": 2010}
+                            "$elemMatch": { "editore": regex, "anno": 2010 }
                         }
                     },
                     {
-                        "projection": { "_id": 0, "titolo": 1, "autore": 1, 
-                               "pubblicazioni.editore.$": 1, 
-                               "pubblicazioni.anno": 1 }
+                        "projection": {
+                            "_id": 0, "titolo": 1, "autore": 1,
+                            "pubblicazioni.editore.$": 1,
+                            "pubblicazioni.anno": 1
+                        }
                     }
                 ).toArray()
                 break;
             case 29:
                 regex = new RegExp("^mondadori$", "i")
-                result = await collection.updateOne({"titolo":"Promessi Sposi", 
-                                                     "pubblicazioni.editore":regex},
-                                {"$inc":{"pubblicazioni.$.nPagine":1}})
-                break;                
+                result = await collection.updateOne({
+                    "titolo": "Promessi Sposi",
+                    "pubblicazioni.editore": regex
+                },
+                    { "$inc": { "pubblicazioni.$.nPagine": 1 } })
+                break;
             case 30:
                 result = await collection.updateOne(
-                                {"titolo":"Promessi Sposi"},   
-                                {"$inc" : {"pubblicazioni.$[].nPagine": 1}})    
-                break;  
+                    { "titolo": "Promessi Sposi" },
+                    { "$inc": { "pubblicazioni.$[].nPagine": 1 } })
+                break;
             case 31:
                 //NOTA: Desc non è riconosciuto nell'aggregate, ma solo nel file. Usare -1 per ordine decrescente e 1 per crescente.
-                 result = await collection.aggregate([
-                    {"$match": {"status": "A"}},
-                    {"$group": {"_id": "$cust_id", "totale": {"$sum": "$amount"}}},
-                    {"$sort": {"totale": -1}}
-                 ]).toArray();   
-                 break;
+                result = await collection.aggregate([
+                    { "$match": { "status": "A" } },
+                    { "$group": { "_id": "$cust_id", "totale": { "$sum": "$amount" } } },
+                    { "$sort": { "totale": -1 } }
+                ]).toArray();
+                break;
             case 32:
-                 result = await collection.aggregate([
-                    {"$match": {"status": "A"}},
-                    {"$group": 
-                        {   "_id": "$cust_id", 
-                            "media": {"$avg": "$amount"}, 
-                            "mediaTotali": {"$avg": {"$multiply": ["$amount", "$qta"]}}
-                        }},
-                    {"$sort": {"media": -1}}
-                 ]).toArray();
+                result = await collection.aggregate([
+                    { "$match": { "status": "A" } },
+                    {
+                        "$group":
+                        {
+                            "_id": "$cust_id",
+                            "media": { "$avg": "$amount" },
+                            "mediaTotali": { "$avg": { "$multiply": ["$amount", "$qta"] } }
+                        }
+                    },
+                    { "$sort": { "media": -1 } }
+                ]).toArray();
                 break;
             case 33:
-                 result = await collection.aggregate([
-                    {"$group": {
-                                    "_id": "$gender", 
-                                    "nEsemplari": {"$sum": 1} 
-                               }
-                    }, 
-                    {"$sort": {"nEsemplari": -1}}
-                 ]).toArray();
+                result = await collection.aggregate([
+                    {
+                        "$group": {
+                            "_id": "$gender",
+                            "nEsemplari": { "$sum": 1 }
+                        }
+                    },
+                    { "$sort": { "nEsemplari": -1 } }
+                ]).toArray();
 
                 break;
             case 34:
-                 result = await collection.aggregate([
-                    {"$group": 
+                result = await collection.aggregate([
+                    {
+                        "$group":
                         {
                             "_id": "$gender",
-                            "vampiriUccisi": {"$avg": "$vampires"}
-                        }
-                    }
-                 ]).toArray();
-                break;
-            case 35:
-                 result = await collection.aggregate([
-                    {"$group":
-                        {
-                            "_id": {"gender": "$gender", "hair": "$hair"},
-                            "nEsemplari": {"$sum": 1}
+                            "vampiriUccisi": { "$avg": "$vampires" }
                         }
                     },
-                    {"$project": 
+                    {
+                        "$project": {
+                            "_id": 0,
+                            "gender": "$_id",
+                            "vampiriUccisi": { "$round": ["$vampiriUccisi", 1] }
+                        }
+                    }
+                ]).toArray();
+                break;
+            case 35:
+                result = await collection.aggregate([
+                    {
+                        "$group":
+                        {
+                            "_id": { "gender": "$gender", "hair": "$hair" },
+                            "nEsemplari": { "$sum": 1 }
+                        }
+                    },
+                    {
+                        "$project":
                         {
                             "genere": "$_id.gender",
                             "pelo": "$_id.hair",
@@ -380,10 +405,82 @@ async function executeQuery(queryNumber: number) {
                             "_id": 0
                         }
                     }]).toArray();
-                 break;
-  
+                break;
 
-
+            case 36:
+                result = await collection.aggregate(
+                    [
+                        { "$group": { "_id": {}, "vampiriUccisi": { "$avg": "$vampires" } } },
+                        { "$project": { "_id": 0, "mediaVampiriUccisi": { "$round": ["$vampiriUccisi", 0] } } }
+                    ]
+                ).toArray()
+                break;
+            case 37:
+                result = await collection.aggregate(
+                    [
+                        {
+                            "$project": {
+                                "avgQuiz": { "$round": [{ "$avg": "$quizzes" }, 1] },
+                                "avgLab": { "$avg": "$labs" },
+                                "avgExam": {
+                                    "$avg": ["$midterm", "$final"]
+                                }
+                            }
+                        },
+                        {
+                            "$group":{
+                                "_id": {},
+                                "mediaQuiz":  {"$avg": "$avgQuiz"},
+                                "mediaLabs": {"$avg": "$avgLab"},
+                                "mediaExams": {"$avg": "$avgExam"}
+                            }
+                        },
+                        {
+                            "$project": {
+                                "_id": 0, 
+                                "mediaQuiz": {"$round": ["$mediaQuiz", 1] },
+                                "mediaLabs": {"$round": ["$mediaLabs", 1] },
+                                "mediaExams": {"$round": ["$mediaExams", 1] }
+                            }
+                        }
+                    ]
+                ).toArray()
+                break;
+            case 38:
+                result = await collection.aggregate(
+                    [
+                        { "$match": { "genere": "f"}},
+                        {
+                            "$project":{
+                                "MediaVoti": {"$round": [{"$avg": "$voti"}, 1]},
+                                "nome": 1,
+                                "_id": 0
+                            }
+                        },
+                        { "$sort": {"MediaVoti": -1}},
+                        { "$limit": 2},
+                        { "$skip": 1}
+                    ]
+                ).toArray()
+                break;
+            case 39:
+                result = await collection.aggregate(
+                    [
+                        {
+                            "$project": { "status": 1, "nDettagli": 1 }
+                        },
+                        {
+                            "$unwind": "$nDettagli"
+                        },
+                        {
+                            "$group":{
+                                "_id": "$status",
+                                "sommaDettagli": { "$sum": "$nDettagli"}
+                            }
+                        }
+                    ]
+                ).toArray()
+                break;
         }
         console.table(JSON.stringify(result, null, 3))
         // instanceof verifica il tipo di un object

@@ -6,11 +6,11 @@ const DBNAME = process.env.DBNAME
 const CONNECTION_STRING = process.env.CONNECTION_STRING_LOCAL!
 
 
-const queryIndex = 39
+const queryIndex = 40
 let collectionName = ""
 if (queryIndex <= 23)
     collectionName = "unicorns"
-else if (queryIndex <= 30)
+else if (queryIndex <= 30 || queryIndex==40)
     collectionName = "biblioteca"
 else if (queryIndex <= 32)
     collectionName = "orders"
@@ -480,6 +480,14 @@ async function executeQuery(queryNumber: number) {
                         }
                     ]
                 ).toArray()
+                break;
+                case 40:
+                    regex = new RegExp("^einaudi$", "i")
+                    result = await collection.aggregate([
+                        {"$unwind":"$pubblicazioni"},
+                        {"$match" : {"pubblicazioni.editore":regex, "pubblicazioni.anno":2010}},
+                        {"$project":{"_id":0, "titolo":1, "autore":1, "pubblicazioni":1}}
+                    ]).toArray()
                 break;
         }
         console.table(JSON.stringify(result, null, 3))

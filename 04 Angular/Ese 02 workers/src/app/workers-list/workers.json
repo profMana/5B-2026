@@ -1,0 +1,50 @@
+[
+  {
+    "nome": "Mario",
+    "cognome": "Rossi",
+    "mestiere": "Muratore",
+    "anniEsperienza": 15,
+    "disponibile": true,
+    "icon": "👷"
+  },
+  {
+    "nome": "Luca",
+    "cognome": "Bianchi",
+    "mestiere": "Idraulico",
+    "anniEsperienza": 8,
+    "disponibile": true,
+    "icon": "👷"
+  },
+  {
+    "nome": "Anna",
+    "cognome": "Verdi",
+    "mestiere": "Elettricista",
+    "anniEsperienza": 12,
+    "disponibile": false,
+    "icon": "👷"
+  },
+  {
+    "nome": "Paolo",
+    "cognome": "Neri",
+    "mestiere": "Falegname",
+    "anniEsperienza": 20,
+    "disponibile": true,
+    "icon": "👷"
+  },
+  {
+    "nome": "Giulia",
+    "cognome": "Galli",
+    "mestiere": "Imbianchino",
+    "anniEsperienza": 5,
+    "disponibile": false,
+    "icon": "👷"
+  },
+  {
+    "nome": "Marco",
+    "cognome": "Conti",
+    "mestiere": "Giardiniere",
+    "anniEsperienza": 10,
+    "disponibile": true,
+    "icon": "👷"
+  }
+]

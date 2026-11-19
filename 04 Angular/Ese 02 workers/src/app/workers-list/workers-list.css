@@ -1,0 +1,148 @@
+.inventory {
+  padding: 24px 28px 28px;
+  background: #fff;
+  border: 1px solid #ddd6ee;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(43 36 64 / 6%);
+}
+
+.worker-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  align-items: end;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e9e4f5;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.field label {
+  color: #6f6a85;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  padding: 0 11px;
+  color: #2b2440;
+  background: #fdfcff;
+  border: 1px solid #d5cde8;
+  border-radius: 4px;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: 2px solid #6d5bd0;
+  outline-offset: 1px;
+}
+
+.available-field {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 40px;
+  color: #6f6a85;
+  font-size: 14px;
+}
+
+.available-field input {
+  width: 17px;
+  height: 17px;
+  accent-color: #6d5bd0;
+}
+
+.add {
+  min-height: 40px;
+  padding: 0 16px;
+  color: #fff;
+  background: #6d5bd0;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 650;
+  transition: background-color 150ms ease;
+}
+
+.add:hover:not(:disabled) {
+  background: #5a49b8;
+}
+
+.add:disabled {
+  background: #b8b1d1;
+  cursor: not-allowed;
+}
+
+.list-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 22px 0 12px;
+}
+
+.list-heading h2 {
+  margin: 0;
+  color: #2b2440;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.count {
+  color: #7a7490;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.worker-list {
+  display: grid;
+  gap: 8px;
+}
+
+.worker-row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.index {
+  color: #9a93b0;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.empty {
+  margin: 8px 0 0;
+  padding: 24px;
+  color: #7a7490;
+  background: #f7f5fb;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .inventory {
+    padding: 18px;
+  }
+
+  .worker-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .worker-form {
+    grid-template-columns: 1fr;
+  }
+
+  .worker-row {
+    grid-template-columns: 24px minmax(0, 1fr);
+  }
+}

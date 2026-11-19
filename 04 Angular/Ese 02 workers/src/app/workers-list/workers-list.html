@@ -1,0 +1,43 @@
+<section class="inventory">
+    <form class="worker-form">
+        <!-- INSERIMENTO NUOVO LAVORATORO -->
+        <div class="field">
+            <label for="txtNome">Nome</label>
+            <input type="text" name="txtNome" id="txtNome" [(ngModel)]="nome" />
+        </div>
+        <div class="field">
+            <label for="txtCognome">Cognome</label>
+            <input type="text" name="txtCognome" id="txtCognome" [(ngModel)]="cognome" />
+        </div>
+        <div class="field">
+            <label for="lstMestiere">Mestiere</label>
+            <select id="lstMestiere" name="mestiere" [(ngModel)]="mestiere">
+                @for(lavoro of mestieri; track lavoro){
+                    <option>{{lavoro}}</option>
+                }
+            </select>
+        </div>
+        <div class="field">
+            <label for="txtAnniEsperienza">Anni di esperienza</label>
+            <input type="number" name="txtAnniEsperienza" 
+                    id="txtAnniEsperienza" [(ngModel)]="anniEsperienza" min="0" max="50" />
+        </div>
+        <label class="available-field" for="chkDisponibile">
+            <input type="checkbox" id="chkDisponibile" name="disponibile"  
+                            [(ngModel)]="disponibile" />
+            <span>Disponibile</span>
+        </label>
+        <button class="add" type="button">
+            Aggiungi Lavoratore
+        </button>
+    </form>
+
+    <!-- VISUALIZZAZIONE ELENCO LAVORATORI CARICATI -->
+    <div class="list-heading">
+        <h2>Lavoratori registrati</h2>
+        <span class="count">***</span>
+    </div>
+    <div class="worker-list">
+
+    </div>
+</section>

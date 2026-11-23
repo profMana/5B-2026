@@ -1,13 +1,19 @@
-<div class="worker">
-    <span class="worker-icon"><!-- ICONA --></span>
+<div class="worker" [ngStyle]="getStyle(currentWorker)">
+    <span class="worker-icon">{{ currentWorker.icon }}</span>
     <div class="details">
-        <h3><!-- NOME e COGNOME --></h3>
-        <p><!-- LAVORO e ANNI ESPERIENZA --></p>
+        <h3>{{currentWorker.nome}} {{currentWorker.cognome}}</h3>
+        <p>{{currentWorker.mestiere}} - {{currentWorker.anniEsperienza}} anni esperienza</p>
     </div>
     <button class="status" type="button">
         <!-- DISPONIBILE -->
+        @if(currentWorker.disponibile)
+        {
+            Disponibile
+        }  
+        @else { Non disponibile }
     </button>
     <button class="delete" type="button">
         <!-- ELIMINAZIONE -->
+         Elimina
     </button>
 </div>

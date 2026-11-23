@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 export interface Lavoratore{
   nome: string;
@@ -10,7 +11,7 @@ export interface Lavoratore{
 }
 
 @Component({
-  imports: [],
+  imports: [CommonModule],
   selector: 'app-worker',
   styleUrl: './worker.css',
   templateUrl: './worker.html',
@@ -18,5 +19,17 @@ export interface Lavoratore{
 
 
 export class Worker {
-  
+  currentWorker : Lavoratore = {
+    nome: 'Mario',
+    cognome: 'Rossi',
+    mestiere: 'Idraulico',
+    anniEsperienza: 5,
+    disponibile: false,
+    icon: '🧑'
+  }
+  getStyle(worker: Lavoratore): Record<string, string>{
+    return {
+      'border-left-color': worker.disponibile ? '#6d5bd0' : '#bd5847'
+    };
+  }
 }

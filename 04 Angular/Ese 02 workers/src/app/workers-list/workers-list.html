@@ -27,7 +27,7 @@
                             [(ngModel)]="disponibile" />
             <span>Disponibile</span>
         </label>
-        <button class="add" type="button">
+        <button class="add" type="button" (click) = "addWorker()">
             Aggiungi Lavoratore
         </button>
     </form>
@@ -35,9 +35,9 @@
     <!-- VISUALIZZAZIONE ELENCO LAVORATORI CARICATI -->
     <div class="list-heading">
         <h2>Lavoratori registrati</h2>
-        <span class="count">***</span>
+        <span class="count">{{workers.length}} lavoratori</span>
     </div>
     <div class="worker-list">
-
+        <app-worker></app-worker>
     </div>
 </section>

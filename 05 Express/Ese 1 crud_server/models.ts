@@ -57,7 +57,7 @@ class Models{
         throw err
     }
 
-    private getObjectId(id:string) : ObjectId | string{
+    private getObjectId(id:string) : any{
         return ObjectId.isValid(id) ? new ObjectId(id) : id
     }
 
@@ -69,12 +69,28 @@ class Models{
         return collections
     }
    
-    async getData(collectionName: string)
+    async getData(collectionName: string, filters: any)
     {
         const db = await this.getDB();
         const collection = db.collection(collectionName);
-        const data = await collection.find().toArray();
+        const data = await collection.find(filters).toArray();
         return data; 
+    }
+
+    async getDataById(collectionName:string, idValue:string)
+    {
+        const db = await this.getDB();
+        const collection = db.collection(collectionName);
+        const data = await collection.findOne({"_id": this.getObjectId(idValue)});
+
+        if(data)
+        {
+            return data;
+        }
+        else
+        {
+            this.emitError(404,"Documento non trovato!");
+        }
     }
 }
 

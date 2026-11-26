@@ -4,7 +4,8 @@
         <h3>{{currentWorker.nome}} {{currentWorker.cognome}}</h3>
         <p>{{currentWorker.mestiere}} - {{currentWorker.anniEsperienza}} anni esperienza</p>
     </div>
-    <button class="status" type="button">
+    <button class="status" type="button" (click)="updateStatus()" 
+            [ngClass]="currentWorker.disponibile ? 'disponibile' : 'non-disponibile'">
         <!-- DISPONIBILE -->
         @if(currentWorker.disponibile)
         {
@@ -12,7 +13,9 @@
         }  
         @else { Non disponibile }
     </button>
-    <button class="delete" type="button">
+    <button class="delete" type="button" (click)="deleteWorker()"
+            [attr.aria-label]="'Elimina ' + currentWorker.nome + ' ' + currentWorker.cognome"
+            [title]="'Elimina ' + currentWorker.nome + ' ' + currentWorker.cognome">
         <!-- ELIMINAZIONE -->
          Elimina
     </button>

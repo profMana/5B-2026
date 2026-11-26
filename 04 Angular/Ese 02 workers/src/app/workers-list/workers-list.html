@@ -3,11 +3,11 @@
         <!-- INSERIMENTO NUOVO LAVORATORO -->
         <div class="field">
             <label for="txtNome">Nome</label>
-            <input type="text" name="txtNome" id="txtNome" [(ngModel)]="nome" />
+            <input type="text" name="txtNome" id="txtNome" [(ngModel)]="nome" required minlength="2" />
         </div>
         <div class="field">
             <label for="txtCognome">Cognome</label>
-            <input type="text" name="txtCognome" id="txtCognome" [(ngModel)]="cognome" />
+            <input type="text" name="txtCognome" id="txtCognome" [(ngModel)]="cognome" required minlength="2" />
         </div>
         <div class="field">
             <label for="lstMestiere">Mestiere</label>
@@ -38,6 +38,18 @@
         <span class="count">{{workers.length}} lavoratori</span>
     </div>
     <div class="worker-list">
-        <app-worker></app-worker>
+        @for(worker of workers; track worker; let index = $index)
+        {
+            <div class="worker-row">
+                <span class="index">{{ (index+1).toString()}}</span>
+                <app-worker 
+                [currentWorker]="worker" 
+                (deleteWorkerEvent) = "onDeleteWorker($event)">
+                </app-worker>
+            </div>
+        }
+        @empty {
+            <p class="empty">Nessun lavoratore nell'anagrafica</p>
+        }
     </div>
 </section>

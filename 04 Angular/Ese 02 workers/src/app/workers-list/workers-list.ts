@@ -35,11 +35,16 @@ export class WorkersList {
     };
     this.workers.push(nuovoWorker)
 
+    // RESET CAMPI
     this.nome = '';
     this.cognome = '';
     this.mestiere = 'Muratore';
     this.disponibile = true;
     this.anniEsperienza = 0;
+    document.getElementById('txtNome')?.focus();
+  }
 
+  onDeleteWorker(workerDaEliminare: Lavoratore):void{
+    this.workers = this.workers.filter(worker => worker != workerDaEliminare);
   }
 }
